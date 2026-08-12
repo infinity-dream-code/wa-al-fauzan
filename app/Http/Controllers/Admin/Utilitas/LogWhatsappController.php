@@ -11,6 +11,7 @@ use App\Models\UAkunModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class LogWhatsappController extends Controller
 {
@@ -141,6 +142,7 @@ class LogWhatsappController extends Controller
             ->map(function ($item, $index) {
                 $item->no = $index + 1;
                 $item->item_id = Crypt::encrypt($item->id);
+                $item->status = $item->status == 200 ? true : false;
                 unset($item->id);
                 return $item;
             })->toArray();
@@ -177,6 +179,33 @@ class LogWhatsappController extends Controller
         $data['datasUrl'] = route('admin.log-whatsapp.get-data');
         // $data['modalLink'] = view('admin.utilitas.notifikasi_whatsapp_tagihan.modal', compact('post'));
 
+        $this->syncMessage();
         return view('admin.utilitas.log.index', $data);
+    }
+
+    public function syncMessage()
+    {
+        $data = LogWhatsappsModel::select(['id', 'log_id'])
+            ->whereNotIn('status', ['200', '2'])
+            ->get();
+
+        $nasabah = 'Yogya_Muallimaat';
+
+        if ($data) {
+            $ForUpdate = $data->pluck('log_id')
+                ->implode(',');
+
+            $targets = DB::connection('mysql_wa')
+                ->select('CALL get_whatsapp_queue_by_client_with_queue_id(:param1, :param2, :param3)', [
+                    'param1' => $nasabah,
+                    'param2' => $ForUpdate,
+                    'param3' => null,
+                ]);
+
+            $targets = collect($targets);
+            foreach ($targets as $target) {
+                LogWhatsappsModel::where('log_id', $target->id)->update(['status' => $target->status]);
+            }
+        }
     }
 }
