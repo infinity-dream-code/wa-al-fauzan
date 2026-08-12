@@ -189,7 +189,7 @@ class LogWhatsappController extends Controller
             ->whereNotIn('status', ['200', '2'])
             ->get();
 
-        $nasabah = 'Yogya_Muallimaat';
+        $nasabah = 'Riau_Ponpes_Al_Utsaimin';
 
         if ($data) {
             $ForUpdate = $data->pluck('log_id')
