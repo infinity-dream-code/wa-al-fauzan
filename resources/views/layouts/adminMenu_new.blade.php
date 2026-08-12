@@ -56,18 +56,7 @@
                 <div data-i18n="Notifikasi Whatsapp">Whatsapp Tunggakan</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is(['admin/notifikasi-whatsapp-tanggungan*'])  ? 'active' : '' }}">
-            <a href="{{route('admin.notifikasi-whatsapp-tanggungan.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons ri ri-feedback-line"></i>
-                <div data-i18n="Notifikasi Whatsapp">Whatsapp Tanggungan</div>
-            </a>
-        </li>
-        <li class="menu-item {{ Request::is(['admin/gaji'])  ? 'active' : '' }}">
-            <a href="{{ route('gaji.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri ri-file-excel-2-line"></i>
-                <div data-i18n="Notifikasi Whatsapp">Whatsapp gaji</div>
-            </a>
-        </li>
+      
         <li class="menu-item {{ Request::is(['admin/log-whatsapp*'])  ? 'active' : '' }}">
             <a href="{{route('admin.log-whatsapp.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons ri ri-list-ordered"></i>
