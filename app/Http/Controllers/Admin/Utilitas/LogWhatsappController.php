@@ -142,7 +142,6 @@ class LogWhatsappController extends Controller
             ->map(function ($item, $index) {
                 $item->no = $index + 1;
                 $item->item_id = Crypt::encrypt($item->id);
-                $item->status = $item->status == 200 ? true : false;
                 unset($item->id);
                 return $item;
             })->toArray();
