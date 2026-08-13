@@ -309,16 +309,10 @@ class NotifikasiWhatsappController extends Controller
                         ]);
 
                     } catch (Exception $e) {
-                        Log::channel('whatsapp')->error('queue manual: failed', [
-                            'error' => $e->getMessage(),
-                        ]);
                         throw $e;
                     }
                 }
             } catch (\Throwable $e) {
-                Log::channel('whatsapp')->error('queue manual: failed', [
-                    'error' => $e->getMessage(),
-                ]);
                 return response()->json(
                     ["error" => true, "message" => $e->getMessage()],
                     500,

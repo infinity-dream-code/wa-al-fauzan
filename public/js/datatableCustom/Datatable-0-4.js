@@ -852,7 +852,7 @@ async function getDT(options) {
                                     const descriptions = {
                                         '0': 'Dalam Antrian',
                                         '1': 'Diproses',
-                                        '2': 'Terkirim',
+                                        '2': 'Terkrim',
                                         '3': 'Gagal',
                                         '4': 'Dibatalkan',
                                         '5': 'Diproses Ulang',
@@ -870,13 +870,8 @@ async function getDT(options) {
                                         '500': 'bg-label-info',
                                     };
 
-                                    const key = String(data);
-                                    const label = Object.prototype.hasOwnProperty.call(descriptions, key)
-                                        ? descriptions[key]
-                                        : 'Gagal';
-                                    const color = Object.prototype.hasOwnProperty.call(badgeColors, key)
-                                        ? badgeColors[key]
-                                        : 'bg-label-danger';
+                                    const label = descriptions[data] || 'Gagal';
+                                    const color = badgeColors[data] || 'bg-label-danger';
 
                                     if (type === 'display' || type === 'filter') {
                                         return `<span class="badge rounded-pill px-3 py-1 ${color}">

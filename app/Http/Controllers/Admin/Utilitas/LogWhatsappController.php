@@ -185,58 +185,37 @@ class LogWhatsappController extends Controller
 
     public function syncMessage()
     {
-        $nasabah = 'sulaiman_al_fauzan';
-
         $data = LogWhatsappsModel::select(['id', 'log_id'])
-            ->whereNotIn('status', ['200', '2', 200, 2])
+            ->whereNotIn('status', ['200', '2'])
             ->get();
 
-        if ($data->isEmpty()) {
-            Log::channel('whatsapp')->info('syncMessage: no pending logs', [
+        $nasabah = 'sulaiman_al_fauzan';
+
+        if ($data) {
+            $ForUpdate = $data->pluck('log_id')
+                ->implode(',');
+
+            Log::channel('whatsapp')->info('syncMessage', [
                 'client' => $nasabah,
+                'log_ids' => $ForUpdate,
             ]);
-            return;
-        }
 
-        // target_id di whatsapp_queue = log_whatsapps.id
-        $targetIds = $data->pluck('id')->all();
-
-        Log::channel('whatsapp')->info('syncMessage: start', [
-            'client' => $nasabah,
-            'target_ids' => $targetIds,
-            'count' => count($targetIds),
-        ]);
-
-        try {
             $targets = DB::connection('mysql_wa')
-                ->table('whatsapp_queue')
-                ->select(['id', 'target_id', 'status', 'client'])
-                ->where('client', $nasabah)
-                ->whereIn('target_id', $targetIds)
-                ->get();
-
-            Log::channel('whatsapp')->info('syncMessage: queue result', [
-                'client' => $nasabah,
-                'result_count' => $targets->count(),
-                'results' => $targets->map(function ($target) {
-                    return [
-                        'queue_id' => $target->id,
-                        'target_id' => $target->target_id,
-                        'status' => $target->status,
-                    ];
-                })->values()->all(),
-            ]);
-
-            foreach ($targets as $target) {
-                LogWhatsappsModel::where('id', $target->target_id)->update([
-                    'status' => $target->status,
+                ->select('CALL get_whatsapp_queue_by_client_with_queue_id(:param1, :param2, :param3)', [
+                    'param1' => $nasabah,
+                    'param2' => $ForUpdate,
+                    'param3' => null,
                 ]);
-            }
-        } catch (\Throwable $e) {
-            Log::channel('whatsapp')->error('syncMessage: failed', [
+
+            Log::channel('whatsapp')->info('syncMessage result', [
                 'client' => $nasabah,
-                'error' => $e->getMessage(),
+                'count' => count($targets),
             ]);
+
+            $targets = collect($targets);
+            foreach ($targets as $target) {
+                LogWhatsappsModel::where('log_id', $target->id)->update(['status' => $target->status]);
+            }
         }
     }
 }

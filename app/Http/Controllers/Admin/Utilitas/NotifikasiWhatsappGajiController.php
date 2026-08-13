@@ -219,9 +219,7 @@ class NotifikasiWhatsappGajiController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::channel('whatsapp')->error('queue gaji: failed', [
-                'error' => $e->getMessage(),
-            ]);
+            logger("LogWhatsappsModel Error: " . $e->getMessage());
         }
     }
 }

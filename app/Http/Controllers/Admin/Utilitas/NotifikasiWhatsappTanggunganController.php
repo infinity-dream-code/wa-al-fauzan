@@ -472,7 +472,7 @@ class NotifikasiWhatsappTanggunganController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollBack();
-                Log::channel("whatsapp")->error("queue tanggungan: failed", [
+                Log::channel("whatsapp")->error("Payment failed", [
                     "error" => $e->getMessage(),
                     "NOREFF" => "error",
                 ]);
