@@ -16,7 +16,7 @@
                         <a href="/" class="app-brand-link gap-2">
                             <span class="app-brand-logo demo">
                                 <span style="color: #666cff">
-                                        <img width="50" height="50" src="{{asset('Logo_512.png')}}" alt="logo">
+                                        <img width="50" height="50" src="{{asset('icon1.jpeg')}}" alt="logo">
                                 </span>
                             </span>
                             <span class="app-brand-text demo text-heading fw-bold">SIKEU ICT</span>

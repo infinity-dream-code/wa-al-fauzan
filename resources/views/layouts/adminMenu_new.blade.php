@@ -8,7 +8,7 @@
         <a href="#" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <span style="color: var(--bs-primary)">
-                  <img width="50" height="50" src="{{asset('logo.png')}}" alt="logo">
+                  <img width="50" height="50" src="{{asset('icon1.jpeg')}}" alt="logo">
                 </span>
               </span>
             <span class="app-brand-text demo menu-text fw-bold ms-2"> {{config('app.nama_instansi')}} </span>

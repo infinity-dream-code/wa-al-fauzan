@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers\Admin\Utilitas;
 
@@ -378,7 +378,7 @@ class NotifikasiWhatsappTunggakanController extends Controller
         $log->status = "kirim whatsapp";
         $log->save();
 
-        $nasabah = "Riau_Ponpes_Al_Utsaimin";
+        $nasabah = "riau_sulaiman_al_fauzan";
         $pesan = "Pesan Whatsapp sedang dalam proses pengiriman!";
 
         foreach ($siswas as $siswa) {

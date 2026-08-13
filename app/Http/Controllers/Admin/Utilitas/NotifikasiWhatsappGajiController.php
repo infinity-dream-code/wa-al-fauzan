@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers\Admin\Utilitas;
 
@@ -168,7 +168,7 @@ class NotifikasiWhatsappGajiController extends Controller
 
         $payload['phone_no'] = $nomor;
         $payload['message'] = $pesan;
-        $nasabah = "Riau_Ponpes_Al_Utsaimin";
+        $nasabah = "riau_sulaiman_al_fauzan";
 
         $log = new LogModel();
         $log->user_id = Auth::user()->id;

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers\Admin\Utilitas;
 
@@ -266,7 +266,7 @@ class NotifikasiWhatsappController extends Controller
         $log->status = "kirim whatsapp";
         $log->save();
 
-        $nasabah = "Riau_Ponpes_Al_Utsaimin";
+        $nasabah = "riau_sulaiman_al_fauzan";
         foreach ($siswas as $siswa) {
             try {
                 if ($siswa['NO_WA'] != null) {
