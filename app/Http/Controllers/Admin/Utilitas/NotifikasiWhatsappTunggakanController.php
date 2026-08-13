@@ -378,7 +378,7 @@ class NotifikasiWhatsappTunggakanController extends Controller
         $log->status = "kirim whatsapp";
         $log->save();
 
-        $nasabah = "riau_sulaiman_al_fauzan";
+        $nasabah = "sulaiman_al_fauzan";
         $pesan = "Pesan Whatsapp sedang dalam proses pengiriman!";
 
         foreach ($siswas as $siswa) {
@@ -441,6 +441,11 @@ class NotifikasiWhatsappTunggakanController extends Controller
                         "response" => '',
                     ]);
 
+                    Log::channel('whatsapp')->info('queue tunggakan: enqueue', [
+                        'client' => $nasabah,
+                        'log_whatsapp_id' => $newLog->id,
+                        'phone' => $payload['phone_no'],
+                    ]);
 
                     $sendData = DB::connection('mysql_wa')
                         ->select('CALL new_whatsapp_queue(:param1, :param2, :param3, :param4)', [
@@ -449,10 +454,16 @@ class NotifikasiWhatsappTunggakanController extends Controller
                             'param3' => $payload['phone_no'],
                             'param4' => $payload['message']
                         ]);
+
+                    Log::channel('whatsapp')->info('queue tunggakan: result', [
+                        'client' => $nasabah,
+                        'log_whatsapp_id' => $newLog->id,
+                        'result' => $sendData,
+                    ]);
                 }
             } catch (Exception $e) {
                 DB::rollBack();
-                Log::channel("whatsapp")->error("Payment failed", [
+                Log::channel("whatsapp")->error("queue tunggakan: failed", [
                     "error" => $e->getMessage(),
                     "NOREFF" => "error",
                 ]);

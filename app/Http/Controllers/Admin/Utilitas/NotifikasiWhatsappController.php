@@ -266,7 +266,7 @@ class NotifikasiWhatsappController extends Controller
         $log->status = "kirim whatsapp";
         $log->save();
 
-        $nasabah = "riau_sulaiman_al_fauzan";
+        $nasabah = "sulaiman_al_fauzan";
         foreach ($siswas as $siswa) {
             try {
                 if ($siswa['NO_WA'] != null) {
@@ -283,11 +283,16 @@ class NotifikasiWhatsappController extends Controller
                             "user_id" => Auth::id(),
                             "status" => 0,
                             "no_wa" => $NoHP,
-                            "pesan" => $fixPesan,
+                            "pesan" => $formPesan,
                             "nama" => $siswa->NMCUST,
                             "response" => '',
                         ]);
 
+                        Log::channel('whatsapp')->info('queue manual: enqueue', [
+                            'client' => $nasabah,
+                            'log_whatsapp_id' => $newLog->id,
+                            'phone' => $payload['phone_no'],
+                        ]);
 
                         $sendData = DB::connection('mysql_wa')
                             ->select('CALL new_whatsapp_queue(:param1, :param2, :param3, :param4)', [
@@ -297,11 +302,23 @@ class NotifikasiWhatsappController extends Controller
                                 'param4' => $payload['message']
                             ]);
 
+                        Log::channel('whatsapp')->info('queue manual: result', [
+                            'client' => $nasabah,
+                            'log_whatsapp_id' => $newLog->id,
+                            'result' => $sendData,
+                        ]);
+
                     } catch (Exception $e) {
+                        Log::channel('whatsapp')->error('queue manual: failed', [
+                            'error' => $e->getMessage(),
+                        ]);
                         throw $e;
                     }
                 }
             } catch (\Throwable $e) {
+                Log::channel('whatsapp')->error('queue manual: failed', [
+                    'error' => $e->getMessage(),
+                ]);
                 return response()->json(
                     ["error" => true, "message" => $e->getMessage()],
                     500,

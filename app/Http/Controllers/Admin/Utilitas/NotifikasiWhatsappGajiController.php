@@ -168,7 +168,7 @@ class NotifikasiWhatsappGajiController extends Controller
 
         $payload['phone_no'] = $nomor;
         $payload['message'] = $pesan;
-        $nasabah = "riau_sulaiman_al_fauzan";
+        $nasabah = "sulaiman_al_fauzan";
 
         $log = new LogModel();
         $log->user_id = Auth::user()->id;
@@ -196,6 +196,12 @@ class NotifikasiWhatsappGajiController extends Controller
                 "response" => '',
             ]);
 
+            Log::channel('whatsapp')->info('queue gaji: enqueue', [
+                'client' => $nasabah,
+                'log_whatsapp_id' => $newLog->id,
+                'phone' => $payload['phone_no'],
+            ]);
+
             $sendData = DB::connection('mysql_wa')
                 ->select('CALL new_whatsapp_queue(:param1, :param2, :param3, :param4)', [
                     'param1' => $nasabah,
@@ -204,10 +210,18 @@ class NotifikasiWhatsappGajiController extends Controller
                     'param4' => $payload['message']
                 ]);
 
+            Log::channel('whatsapp')->info('queue gaji: result', [
+                'client' => $nasabah,
+                'log_whatsapp_id' => $newLog->id,
+                'result' => $sendData,
+            ]);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            logger("LogWhatsappsModel Error: " . $e->getMessage());
+            Log::channel('whatsapp')->error('queue gaji: failed', [
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 }
