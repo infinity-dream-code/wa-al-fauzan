@@ -35,7 +35,7 @@ final class Messages
         // ];
 
         $pesan = [
-            "Assalamualaikum Warahmatullahi wabarakatuh\nKami dari keuangan Ponpes Al Utsaimin\nMemberitahukan kepada wali santri atas nama {nama_anak}\nMasih ada kekurangan pembayaran sebesar {jumlah_tagihan}, dengan rincian : {rincian}Mohon untuk segera di tunaikan, atas perhatiannya kami sampaikan \nJazaakumullah khairan katsiran.\n\n*_*pesan otomatis dari " . config('app.nama_instansi') . "_*\n*_*Silahkan menghubungi bagian keuangan jika ada kesalahan tagihan atau nama siswa_*",
+            "Assalamualaikum Warahmatullahi wabarakatuh\nKami dari keuangan Ponpes Sulaiman Al Fauzan\nMemberitahukan kepada wali santri atas nama {nama_anak}\nMasih ada kekurangan pembayaran sebesar {jumlah_tagihan}, dengan rincian : {rincian}Mohon untuk segera di tunaikan, atas perhatiannya kami sampaikan \nJazaakumullah khairan katsiran.\n\n*_*pesan otomatis dari " . config('app.nama_instansi') . "_*\n*_*Silahkan menghubungi bagian keuangan jika ada kesalahan tagihan atau nama siswa_*",
 
             "Assalamualaikum Warahmatullahi wabarakatuh\nDengan hormat, kami dari " . config('app.nama_instansi') . "  menyampaikan bahwa ananda {nama_anak} masih memiliki tagihan sebesar {jumlah_tagihan} dengan rincian.\nRincian :{rincian}Terima kasih atas perhatian dan kerjasamanya. Wassalam 🙏.\n\n*_*pesan otomatis dari " . config('app.nama_instansi') . "_*\n*_*Silahkan menghubungi bagian keuangan jika ada kesalahan tagihan atau nama siswa_*",
 
